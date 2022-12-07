@@ -57,14 +57,14 @@
   </head>
   <body>
     <div class="bg" id="bg" onclick="mouseClicked()">
-        <h1 id="time" onclick="changeTime()">6:59AM</h1>
+        <h1 id="time">6:59AM</h1>
         <p id="date">Monday</p>
         <p id="date">Dec 19, 2022</p>
     </div>
 
-    <!-- <manifest>
+    <manifest>
         <uses-permission android:name="android.permission.BLUETOOTH_SCAN"></uses-permission>
-    </manifest> -->
+    </manifest>
 
     <script>
         function setup() {
@@ -76,38 +76,42 @@
 
         function mouseClicked() {
             P5tCube.connectNewP5tCube().then(cube => {
-                turnLight(cube);
+                cube.turnLightOn('white');
                 toios.push(cube);
             });
         }
 
-        function turnLight(cube) {
-            cube.turnLightOn('white');
+        function touchStarted() {
+            P5tCube.connectNewP5tCube().then(cube => {
+                cube.turnLightOn('white');
+                toios.push(cube);
+            });
         }
 
         function playMelody(cube) {
             cube.playMelody([
-                { note: 0x3C, duration: 0x1E },
-                { note: 0x3E, duration: 0x1E },
-                { note: 0x40, duration: 0x1E },
+                {note: 0x3C, duration: 0x1E},
+                {note: 0x3E, duration: 0x1E},
+                {note: 0x3C, duration: 0x1E},
+                {note: 0x3E, duration: 0x1E},
+                {note: 0x3C, duration: 0x1E},
+                {note: 0x3E, duration: 0x1E},
+                {note: 0x3C, duration: 0x1E},
+                {note: 0x3E, duration: 0x1E},
+                {note: 0x3C, duration: 0x1E},
+                {note: 0x3E, duration: 0x1E}
             ]);
         }
 
         function keyPressed() {
             if (keyCode === UP_ARROW) {
-                left = 100;
-                right = 100;
+                //Change time and move robots when up arrow is pressed
+                document.getElementById("time").innerHTML = "7:00AM";
+                for (let toio of toios) {
+                    playMelody(toio);
+                    toio.move(100, 100, 3000);
+                }
             }
-
-            const duration = 3000;
-            for (let toio of toios) {
-                toio.move(left, right, duration);
-                playMelody(toio);
-            }
-        }
-
-        function changeTime() {
-            document.getElementById("time").innerHTML = "7:00AM";
         }
     </script>
   </body>
